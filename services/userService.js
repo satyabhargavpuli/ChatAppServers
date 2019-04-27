@@ -34,7 +34,10 @@ module.exports = {
 
     },
 
-    login(data, callback) {
+    login(data, callback) 
+    {
+        console.log("in login servuce");
+        
         modal.login(data, (error, result) => {
             if (error) {
                 callback(error)
@@ -66,6 +69,18 @@ module.exports = {
             else{
                 callback(result);
             }
+        })
+    },
+    getUserDB(data,callback){
+        modal.getUserDB(data,(error,result)=> {
+        if(error)
+        {
+           callback(error);
+        }
+        else{
+            callback(result);
+        }
+        
         })
     }
 

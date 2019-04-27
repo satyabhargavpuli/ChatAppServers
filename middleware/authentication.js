@@ -8,7 +8,7 @@
  * 
  *@since       :  15-apr-2019
  ********************************************************************************************************/
-
+//these are used for ignoring validating the tokens
 const jwt = require('jsonwebtoken')
 exports.authentication = (req, res, next) => {
     var token = req.headers['token']
@@ -20,9 +20,9 @@ exports.authentication = (req, res, next) => {
                 res.status(108).send({
                     success: false,
                     message: 'Bad Token'
-                })  
+                })        
             }
-            else {
+            else {   
                 req.userinfo = result;
                 console.log("authentication successful",result);
                 next();

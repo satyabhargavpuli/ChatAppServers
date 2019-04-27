@@ -1,4 +1,4 @@
-/*********************************************************************************************
+/*********************************************************************************************************
  * @purpose         : used for storing the data by using schema to the database and retrieving them 
  * 
  * @file            : userModel.js
@@ -6,17 +6,15 @@
  * @author          : p satya bhargav         <satyabhargav.puli@gmail.com>
  * 
  * @since           : 13-apr-2019
-  ********************************************************************************************/
+  *********************************************************************************************************/
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 // initializing the Schema class and passing the object into the constructor
 const schema = new mongoose.Schema({
-    firstname: {
-        type: String, require: [true, "firstname require"]
+    username: {
+        type: String, require: [true, "username require"]
     },
-    lastname: {
-        type: String, require: [true, "lastname require"]
-    },
+    
     email: {
         type: String, require: [true, "email require"]
     },
@@ -53,9 +51,8 @@ userModel.prototype.registration = (body, callback) => {
         else {
             //creating a json object            
             const obj = {
-                "firstname": body.firstname,
-                "lastname": body.lastname,
-                "email": body.email,
+                "username": body.username,
+                 "email": body.email,
                 "password": encrypt(body.password)
                 //"password": bcrypt.hashSync(body.password, 10) we can also use this variable
             }
@@ -68,7 +65,7 @@ userModel.prototype.registration = (body, callback) => {
                     callback(null, result)
                 }
                 else {
-                    console.log("failed to dump in database ");
+                    console.log("failed to dump in database");
                     callback(err);
                 }
             });
@@ -77,23 +74,21 @@ userModel.prototype.registration = (body, callback) => {
 },
     userModel.prototype.login = (body, callback) => {
         //fetching the data with the user email from the database
+        
         console.log("------------>", body);
 
-        user.findOne({ "email": body.email }, (err, data) => {
+        user.findOne({ "email": body.email }, (err, dbData) => {
             if (err) {
                 callback(err)
+                console.log("error userModel  ", err);
+                console.log("---------",dbData)
+                
             }
-            else if (data != null) {
-                bcrypt.compare(body.password, data.password).then(function (result) {
+            else if (dbData != null) {
+                bcrypt.compare(body.password, dbData.password).then(function (result) {
                     if (result) {
                         console.log("Login Successful");
-                        var response = {
-                            _id: data._id,
-                            firstname: data.firstname,
-                            // lastname:data.lastname,
-                            email: data.email
-                        }
-                        callback(null, response);
+                        callback(null, dbData);
                     }
                     else {
                         console.log("incorrect password");
@@ -147,6 +142,26 @@ userModel.prototype.registration = (body, callback) => {
         }
     });
     }
+
+    userModel.prototype.getUserDB=(req,callback) => {
+    console.log("::::::::",req);
+    user.find({},(err,result)=>{
+
+        if(err){
+            callback(err);
+         }
+         else {
+             callback(null,result);
+             console.log('!!!!!!!!',result);
+             
+         }
+    })
+
+
+
+
+    }
+
 
 module.exports = new userModel();
 

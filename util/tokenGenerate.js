@@ -11,9 +11,9 @@
   ********************************************************************************************/
 const jwt = require('jsonwebtoken')
 module.exports = {
-    cookToken(payload) {
-        const token = jwt.sign({ payload }, 'secretkey', { expiresIn: '1d' }) 
-        //here we can create tokens in two ways
+    generateToken(load) {
+        const token = jwt.sign({ load }, 'secretkey', { expiresIn: '1d' }) 
+        //here we can create tokens in two way s
         /* first by creating object
         const tokenObject = {
             success: true,
@@ -22,11 +22,11 @@ module.exports = {
          }*/
          /* assigning token directly
         return token; */
-        const tokenObject = {
-            success: true,
-            message: "Token genearted successfully",
-            token: token
-        }
-        return tokenObject;
+        // const tokenObject = {
+        //     success: true,
+        //     message: "Token genearted successfully",
+        //     token: token
+        // }
+        return token;
     }
 }
